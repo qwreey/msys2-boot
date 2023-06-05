@@ -8,7 +8,7 @@ for /f "usebackq delims=" %%a in ("!file!") do (
         set currkey=%%b
         set currval=%%c
         if "x!key: =!!"=="x!currkey: =!" (
-            if "x!currval:~0,1!x"=="x x" ( echo !currval:~1! ) else ( echo !currval! )
+            if "x!currval:~0,1!x"=="x x" ( echo:!currval:~1! ) else ( echo:!currval! )
         )
     )
 )
