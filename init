@@ -1,1 +1,1 @@
-/boot/init.bat $@
+"$(dirname "$0")/init.bat" $@

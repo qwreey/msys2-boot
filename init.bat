@@ -45,7 +45,7 @@ if NOT DEFINED BOOTROOT (
     SETLOCAL EnableDelayedExpansion
     set "BOOTROOT=%~dp0.."
     call :debug BOOTROOT was initialized to !BOOTROOT!
-    ENDLOCAL
+    ENDLOCAL & set BOOTROOT=%BOOTROOT
 ) else ( call :debug use inherited BOOTROOT )
 if DEFINED BOOTPATH (
     set "PATH=%BOOTPATH%"
