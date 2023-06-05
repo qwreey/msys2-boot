@@ -42,10 +42,8 @@ if DEFINED BOOTARG_UNNEST (
     call :debug forcing unnested
 )
 if NOT DEFINED BOOTROOT (
-    SETLOCAL EnableDelayedExpansion
     set "BOOTROOT=%~dp0.."
-    call :debug BOOTROOT was initialized to !BOOTROOT!
-    ENDLOCAL & set BOOTROOT=%BOOTROOT
+    call :debug BOOTROOT was initialized to %BOOTROOT%
 ) else ( call :debug use inherited BOOTROOT )
 if DEFINED BOOTPATH (
     set "PATH=%BOOTPATH%"
