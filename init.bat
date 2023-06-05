@@ -79,6 +79,12 @@ set FPATH=
 set PROMPT=
 set PS1=
 set MSYSTEM=MSYS
+set HOME=
+set USER=
+set USETNAME=
+set HOST=
+set HOSTNAME=
+set LOGNAME=
 if NOT DEFINED BOOTARG_HOME (
     set CHERE_INVOKING=enabled_from_arguments
     set SHLVL=
