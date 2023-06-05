@@ -46,7 +46,15 @@ if NOT DEFINED BOOTROOT (
     if NOT EXIST "%BOOTROOT%msys-2.0.dll" set "BOOTROOT=%~dp0.."
     call :debug BOOTROOT was initialized to %BOOTROOT%
 ) else call :debug use inherited BOOTROOT
-if DEFINED BOOTPATH ( set "PATH=%BOOTPATH%" & set BOOTNESTED=yes ) else ( set "BOOTPATH=%PATH%" & set BOOTNESTED=no )
+if DEFINED BOOTPATH (
+    set "PATH=%BOOTPATH%"
+    set BOOTNESTED=yes
+    set BOOTAPATH=
+) else (
+    set "BOOTPATH=%PATH%"
+    set BOOTNESTED=no
+    for /f %%i in ('%BOOTROOT%\boot\readconf.bat %BOOTROOT%\boot\user.conf additional_path') do set BOOTAPATH=%%i
+)
 exit /b 0
 
 @rem GET USER SHELL
@@ -103,6 +111,7 @@ set BOOTINIT=
 set BOOTDEBUG=
 set BOOTPATH=
 set BOOTTERM=
+set BOOTAPATH=
 exit /b 0
 
 @rem BOOT
