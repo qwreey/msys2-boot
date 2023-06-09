@@ -68,7 +68,7 @@ exit /b 0
 @rem GET TERMINAL
 :TASK_GETTERM
 set BOOTTERM=
-if "x%BOOTARG_TERM%x" == "xminttyx" set BOOTTERM=%BOOTROOT%\usr\bin\mintty.exe
+if "x%BOOTARG_TERM%x" == "xminttyx" set "BOOTTERM=%BOOTROOT%\usr\bin\mintty.exe --nopin -d -t Terminal -o ProgressBar=1"
 if DEFINED BOOTTERM call :debug use %BOOTTERM% as TERM
 exit /b 0
 
