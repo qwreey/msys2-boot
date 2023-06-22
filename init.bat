@@ -62,6 +62,7 @@ if NOT DEFINED BOOTARG_SHELL (
     for /f %%i in ('%BOOTROOT%\boot\readconf.bat %BOOTROOT%\boot\user.conf shell') do set BOOTSHELL=%%i
 ) else set "BOOTSHELL=%BOOTARG_SHELL%"
 if NOT DEFINED BOOTSHELL ( set BOOTSHELL=/usr/bin/bash )
+set "LOGINSHELL=%BOOTSHELL%"
 call :debug use %BOOTSHELL% as SHELL
 exit /b 0
 
@@ -122,6 +123,7 @@ exit /b 0
 :TASK_BOOT
 set "BOOTINIT=%BOOTTERM% %BOOTROOT%%BOOTSHELL:/=\%.exe -l"
 if DEFINED BOOTARG_ISOLATE set "BOOTINIT=%BOOTROOT%\usr\bin\env -i %BOOTINIT%" & call :debug env values was isolated
+set MSYSTEM=MINGW64
 call :debug execute %BOOTINIT%
 (%BOOTINIT%)
 exit /b 0
