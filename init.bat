@@ -80,6 +80,7 @@ set FPATH=
 set PROMPT=
 set PS1=
 set MSYSTEM=MSYS
+set MSYS2_PATH_TYPE=inherit
 set HOME=
 set USER=
 set USETNAME=
@@ -98,7 +99,7 @@ exit /b 0
 @rem CREATE USER
 :TASK_SETUPUSER
 SETLOCAL
-for /f %%i in ('C:\Windows\System32\whoami.exe /USER /FO csv /NH') do set USER=%%i
+for /f %%i in ('%windir%\System32\whoami.exe /USER /FO csv /NH') do set USER=%%i
 if EXIST %BOOTROOT%\boot\cached set /p CACHED=<%BOOTROOT%\boot\cached
 if "%USER: =%" NEQ "%CACHED: =%" (
     %BOOTROOT%\boot\luajit.exe %BOOTROOT%\boot\inituser.lua
@@ -146,7 +147,7 @@ echo %~dp0user.conf
 echo:
 echo Current values:
 set BOOTHELP=
-for /f %%i in ('C:\Windows\System32\whoami.exe') do set BOOTHELP=%%i
+for /f %%i in ('%windir%\System32\whoami.exe') do set BOOTHELP=%%i
 echo   %BOOTHELP%
 set BOOTHELP=
 for /f %%i in ('%~dp0\readconf.bat %~dp0\user.conf user') do set BOOTHELP=%%i
