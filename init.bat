@@ -7,6 +7,7 @@ set BOOTARG_SHELL=
 set BOOTARG_UNNEST=
 set BOOTARG_ISOLATE=
 set BOOTARG_HOME=
+set BOOTARG_MSYS=
 :checkparams
 if "x%~1" == "x-mintty"  shift& set BOOTARG_TERM=mintty&      goto :checkparams
 if "x%~1" == "x-debug"   shift& set BOOTARG_DEBUG=y&          goto :checkparams
@@ -19,6 +20,14 @@ if "x%~1" == "x-help" goto :help
 if "x%~1" == "x--help" goto :help
 if "x%~1" == "xhelp" goto :help
 if "x%~1" == "x?" goto :help
+if "x%~1" == "x-msys"       shift& set BOOTARG_MSYS=MSYS&       goto :checkparams
+if "x%~1" == "x-msys2"      shift& set BOOTARG_MSYS=MSYS&       goto :checkparams
+if "x%~1" == "x-mingw32"    shift& set BOOTARG_MSYS=MINGW32&    goto :checkparams
+if "x%~1" == "x-mingw64"    shift& set BOOTARG_MSYS=MINGW64&    goto :checkparams
+if "x%~1" == "x-ucrt64"     shift& set BOOTARG_MSYS=UCRT64&     goto :checkparams
+if "x%~1" == "x-clang64"    shift& set BOOTARG_MSYS=CLANG64&    goto :checkparams
+if "x%~1" == "x-clang32"    shift& set BOOTARG_MSYS=CLANG32&    goto :checkparams
+if "x%~1" == "x-clangarm64" shift& set BOOTARG_MSYS=CLANGARM64& goto :checkparams
 
 call :debug BOOTING ...
 
@@ -69,7 +78,7 @@ exit /b 0
 @rem GET TERMINAL
 :TASK_GETTERM
 set BOOTTERM=
-if "x%BOOTARG_TERM%x" == "xminttyx" set "BOOTTERM=%BOOTROOT%\usr\bin\mintty.exe --nopin -d -t Terminal -o ProgressBar=1"
+if "x%BOOTARG_TERM%x" == "xminttyx" set "BOOTTERM=%BOOTROOT%\usr\bin\mintty.exe --nopin --daemon -t Terminal -o FontRender=textout -o FontSmoothing=Partial -o DisplaySpeedup=9 -o ProgressBar=1"
 if DEFINED BOOTTERM call :debug use %BOOTTERM% as TERM
 exit /b 0
 
@@ -79,7 +88,6 @@ call :debug setting env values
 set FPATH=
 set PROMPT=
 set PS1=
-set MSYSTEM=MSYS
 set MSYS2_PATH_TYPE=inherit
 set HOME=
 set USER=
@@ -94,6 +102,7 @@ if NOT DEFINED BOOTARG_HOME (
     set CHERE_INVOKING=
     set SHLVL=0
 )
+if DEFINED BOOTARG_MSYS set "MSYSTEM=%BOOTARG_MSYS%" else set MSYSTEM=MSYS
 exit /b 0
 
 @rem CREATE USER
@@ -142,6 +151,16 @@ echo                         completely (not recommended)
 echo -home                 : Ignore cwd, instead cd to $HOME
 echo -? [-][-]help         : Show this message
 echo:
+echo Boot msystem option
+echo -msys       : Boot as MSYSTEM=MSYS
+echo -msys2      : Boot as MSYSTEM=MSYS
+echo -mingw32    : Boot as MSYSTEM=MINGW32
+echo -mingw64    : Boot as MSYSTEM=MINGW64
+echo -ucrt64     : Boot as MSYSTEM=UCRT64
+echo -clang64    : Boot as MSYSTEM=CLANG64
+echo -clang32    : Boot as MSYSTEM=CLANG32
+echo -clangarm64 : Boot as MSYSTEM=CLANGARM64
+echo:
 echo You can adjust path, homedir, username configuration in
 echo %~dp0user.conf
 echo:
@@ -179,3 +198,4 @@ set BOOTHELP=
 for /f %%i in ('%~dp0\readconf.bat %~dp0\user.conf admin_shell') do set BOOTHELP=%%i
 if DEFINED BOOTHELP echo     admin_shell: %BOOTHELP%
 exit 0
+
